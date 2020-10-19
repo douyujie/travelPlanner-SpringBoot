@@ -1,9 +1,9 @@
 package com.example.springdemo.controller;
-import com.example.springdemo.models.User;
-import com.example.springdemo.payload.request.LoginRequest;
-import com.example.springdemo.payload.request.SignupRequest;
-import com.example.springdemo.payload.response.JwtResponse;
-import com.example.springdemo.payload.response.MessageResponse;
+import com.example.springdemo.models.entity.User;
+import com.example.springdemo.models.request.LoginRequest;
+import com.example.springdemo.models.request.SignupRequest;
+import com.example.springdemo.models.response.JwtResponse;
+import com.example.springdemo.models.response.MessageResponse;
 import com.example.springdemo.repository.UserRepository;
 import com.example.springdemo.security.jwt.JwtUtils;
 import com.example.springdemo.security.services.UserDetailsImpl;

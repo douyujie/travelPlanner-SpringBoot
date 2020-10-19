@@ -1,4 +1,4 @@
-package com.example.springdemo.payload.response;
+package com.example.springdemo.models.response;
 
 public class MessageResponse {
 	private String message;

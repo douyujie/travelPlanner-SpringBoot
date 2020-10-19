@@ -1,4 +1,4 @@
-package com.example.springdemo.payload.request;
+package com.example.springdemo.models.request;
 
 import javax.validation.constraints.NotBlank;
 

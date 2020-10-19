@@ -1,15 +1,20 @@
-package com.example.springdemo.entity;
+package com.example.springdemo.models;
 
-
+import com.example.springdemo.models.Geometry;
 import java.io.Serializable;
 
+/**
+ * stores the detailed information of a tourist attraction.
+ * DONT CHANGE THE FILED NAMES because they're binded with
+ * json data returned from the API call
+ */
 @lombok.Data
-public class PlaceDetailResult {
+public class AttractionDetail implements Serializable {
     private String status;
-    private Data Result;
+    private Detail Result;
 
     @lombok.Data
-    public static class Data implements Serializable {
+    public static class Detail implements Serializable {
         private String name;
         private Geometry geometry;
         private String business_status;

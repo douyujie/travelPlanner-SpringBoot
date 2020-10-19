@@ -1,7 +1,9 @@
 package com.example.springdemo.rpc;
 
-import com.example.springdemo.entity.*;
-import com.example.springdemo.entity.PlaceDetailResult;
+import com.example.springdemo.models.AttractionDetail;
+import com.example.springdemo.models.AttractionsResult;
+import com.example.springdemo.models.Geometry;
+import com.example.springdemo.models.PlaceCoordinate;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -34,7 +36,7 @@ public class GoogleMapClient {
                     "place_id=%s&" +
                     "key=%s";
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public GoogleMapClient() {
         restTemplate = new RestTemplate();
@@ -46,8 +48,14 @@ public class GoogleMapClient {
     }
 
 
-    public NearbySearchResult.Data[] getNearbyResult(String city) {
-        Geometry geometry = getCityInfo(city);
+    /**
+     * @return the tourist attractions which are stored in an AttractionsResult object.
+     * The main logic is in the overloaded function below. In this method, we get the
+     * coordinates of center and calculate for radius which are required by the overloaded
+     * method.
+     */
+    public AttractionsResult getAttractionsResult(String city) {
+        Geometry geometry = getPlaceCoordinate(city);
 
         double centerLat = geometry.getLocation().getLat();
         double centerLng = geometry.getLocation().getLng();
@@ -63,54 +71,59 @@ public class GoogleMapClient {
 
         int radius = (dist1 + dist2) / 2;
 
-        return getNearbyResult(centerLat, centerLng, radius);
+        return getAttractionsResult(centerLat, centerLng, radius);
     }
 
-    private Geometry getCityInfo(String city) {
+    /**
+     * @return the geometry of the city, including center/northeast/southwest coordinates.
+     * Attention, there may be several candidates, we only return the first one, if any
+     * else return null.
+     */
+    private Geometry getPlaceCoordinate(String city) {
         String url = String.format(FIND_PLACE_URL, city, KEY);
         System.out.println(url);
-        FindPlaceResult res = restTemplate.getForObject(url, FindPlaceResult.class);
-        FindPlaceResult.Candidate[] c = res.getCandidates();
-        if (c.length == 0) {
-            return null;
-        }
-        return c[0].getGeometry();
+        PlaceCoordinate res = restTemplate.getForObject(url, PlaceCoordinate.class);
+        PlaceCoordinate.Candidate[] candidates = res.getCandidates();
+        if (candidates.length == 0) return null;
+        return candidates[0].getGeometry();
     }
 
+    // TODO this function should be re-implemented
+    /**
+     * @return the spherical distance between two coordinates
+     */
     private int calcDist(double lat1, double lng1, double lat2, double lng2) {
         return 20000;
     }
 
-    private NearbySearchResult.Data[] getNearbyResult(double lat, double lng, int radius) {
-        NearbySearchResult.Data[] data = new NearbySearchResult.Data[LIMIT];
+
+    /**
+     * @param lat: latitude of the center of the city
+     * @param lng: longitude of the center of the city
+     * @param radius: radius of the city
+     * @return the tourist attractions in the city which are stored in the AttractionResult
+     * object
+     */
+    private AttractionsResult getAttractionsResult(double lat, double lng, int radius) {
         String url = String.format(NEARBY_SEARCH_URL, lat, lng, radius, TYPE, KEY);
         System.out.println("calling: " + url);
-        NearbySearchResult res = restTemplate.getForObject(url, NearbySearchResult.class);
-
-        int k = 0;
-        for (NearbySearchResult.Data d : res.getResults()) {
-            data[k++] = d;
-        }
-
-        for (int i = 0; i < 2; i++) {
-            String token = res.getNext_page_token();
-            url = String.format(NEARBY_SEARCH_NEXT_PAGE_URL, token, KEY);
-            System.out.println("calling: " + url);
-            res = restTemplate.getForObject(url, NearbySearchResult.class);
-            System.out.println(res.getStatus());
-            for (NearbySearchResult.Data d : res.getResults()) {
-                data[k++] = d;
-            }
-        }
-        return data;
+        AttractionsResult res = restTemplate.getForObject(url, AttractionsResult.class);
+        return res;
     }
 
-    public PlaceDetailResult.Data getDetailResult(String place_id) {
+    /**
+     * @param place_id: this info is returned by Google Map API for each
+     * tourist attraction stored in AttractionsResult
+     * @return the detail information of a tourist attractions, which is
+     * stored in an AttractionDetail object
+     */
+    public AttractionDetail getPlaceDetailResult(String place_id) {
         String url = String.format(PLACE_DETAIL_SEARCH_URL, place_id, KEY);
         System.out.println("calling: " + url);
-        PlaceDetailResult res = restTemplate.getForObject(url, PlaceDetailResult.class);
-        return res.getResult();
+        return restTemplate.getForObject(url, AttractionDetail.class);
     }
+
 }
+
 
 

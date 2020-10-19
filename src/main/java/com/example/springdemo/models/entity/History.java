@@ -1,5 +1,6 @@
-package com.example.springdemo.models;
+package com.example.springdemo.models.entity;
 
+import com.example.springdemo.models.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;

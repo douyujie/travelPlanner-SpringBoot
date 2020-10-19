@@ -1,8 +1,12 @@
-package com.example.springdemo.entity;
-
+package com.example.springdemo.models;
 
 import java.io.Serializable;
 
+
+/**
+ * This class includes three coordinates that
+ * describe a place: center, northeast and southwest
+ */
 @lombok.Data
 public class Geometry implements Serializable {
     private Location location;

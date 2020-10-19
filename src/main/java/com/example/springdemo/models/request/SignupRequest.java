@@ -1,6 +1,4 @@
-package com.example.springdemo.payload.request;
-
-import java.util.Set;
+package com.example.springdemo.models.request;
 
 import javax.validation.constraints.*;
  

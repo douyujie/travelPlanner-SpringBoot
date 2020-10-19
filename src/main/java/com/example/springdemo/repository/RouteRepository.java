@@ -1,6 +1,6 @@
 package com.example.springdemo.repository;
 
-import com.example.springdemo.models.entity.History;
+import com.example.springdemo.models.entity.Route;
 import com.example.springdemo.models.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface HistoryRepository extends JpaRepository <History, Long> {
-    @Query(name="select h from History h join User u where u.username = user.username")
-    List<History> findAllByUser(@Param("user") User user);
+public interface RouteRepository extends JpaRepository<Route, Long> {
+    Route findByHashcode(String hashCode);
+
+    @Query(name="select h from Route h join Plan p where p.id = id")
+    List<Route> findAllByPlanId(@Param("planId") long id);
 }
