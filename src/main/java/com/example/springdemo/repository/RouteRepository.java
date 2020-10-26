@@ -12,7 +12,4 @@ import java.util.List;
 @Repository
 public interface RouteRepository extends JpaRepository<Route, Long> {
     Route findByHashcode(String hashCode);
-
-    @Query(name="select h from Route h join Plan p where p.id = id")
-    List<Route> findAllByPlanId(@Param("planId") long id);
 }

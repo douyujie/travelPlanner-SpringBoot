@@ -18,7 +18,7 @@ public class RouteAttractionId implements Serializable {
 
     @Override
     public int hashCode() {
-        return route.getId() + attraction.getId();
+        return (int)route.getId() + (int)attraction.getId();
     }
 
     @Override

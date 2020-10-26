@@ -13,7 +13,7 @@ public class Route implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     private int day;
 

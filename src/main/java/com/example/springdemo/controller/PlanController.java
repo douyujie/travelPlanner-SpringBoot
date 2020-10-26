@@ -128,9 +128,7 @@ public class PlanController {
                     userPlan = new UserPlan();
                     userPlan.setUser(user);
                     userPlan.setPlan(plan);
-                    userPlan.setId(1);
                     userPlanRepository.save(userPlan);
-                    planRepository.save(plan);
                 }
             }
             return new BaseResponse<>("200", null, "Add plan succeeded");
@@ -148,37 +146,40 @@ public class PlanController {
             userPlanData.setPlanDataList(new ArrayList<>());
             // Get PlanList and values of attributes from PlanList
             User user = userRepository.findByUsername(username);
-            List<Plan> planList = planRepository.findAllByUserId(user.getId());
-            if (planList == null || planList.size() == 0) {
+            List<UserPlan> userPlanList = userPlanRepository.findAllByUserId(user.getId());
+            if (userPlanList == null || userPlanList.size() == 0) {
                 return new BaseResponse<>("200", null, "No saved plan is available");
             }
             userPlanData.setUsername(username);
-            for (Plan plan : planList) {
+            for (UserPlan userPlan : userPlanList) {
+                Plan plan = userPlan.getPlan();
                 String planName = plan.getName();
-                int planId = plan.getId();
+                long planId = plan.getId();
                 String city = plan.getCity().getName();
-                int cityId = plan.getCity().getId();
+                long cityId = plan.getCity().getId();
                 // Set values of attributes in PlanData
                 UserPlanData.PlanData planData = new UserPlanData.PlanData();
                 planData.setPlanId(planId);
                 planData.setPlanName(planName);
                 planData.setCity(city);
                 planData.setCityId(cityId);
-                List<Route> routeList = routeRepository.findAllByPlanId(planId);
-                if (routeList == null || routeList.size() == 0) {
+                List<PlanRoute> planRouteList = planRouteRepository.findAllByPlanId(planId);
+                if (planRouteList == null || planRouteList.size() == 0) {
                     continue;
                 }
                 List<UserPlanData.RouteData> routeDataList = new ArrayList<>();
-                for (Route route : routeList) {
+                for (PlanRoute planRoute : planRouteList) {
+                    Route route = planRoute.getRoute();
                     UserPlanData.RouteData routeData = new UserPlanData.RouteData();
                     routeData.setRouteId(route.getId());
                     routeData.setDay(route.getDay());
-                    List<Attraction> attractionList = attractionRepository.findAllByRouteId(route.getId());
+                    List<RouteAttraction> attractionList = routeAttractionRepository.findAllByRouteId(route.getId());
                     if (attractionList == null || attractionList.size() == 0) {
                         continue;
                     }
                     List<UserPlanData.AttractionData> attractionDataList = new ArrayList<>();
-                    for (Attraction attraction : attractionList) {
+                    for (RouteAttraction routeAttraction : attractionList) {
+                        Attraction attraction = routeAttraction.getAttraction();
                         UserPlanData.AttractionData attractionData = new UserPlanData.AttractionData();
                         attractionData.setAttractionName(attraction.getName());
                         attractionData.setAttactionId(attraction.getId());
@@ -276,21 +277,23 @@ public class PlanController {
                 planData.setPlanId(planId);
                 planData.setCity(city);
                 planData.setCityId(cityId);
-                List<Route> routeList = routeRepository.findAllByPlanId(planId);
-                if (routeList == null || routeList.size() == 0) {
+                List<PlanRoute> planRouteList = planRouteRepository.findAllByPlanId(planId);
+                if (planRouteList == null || planRouteList.size() == 0) {
                     continue;
                 }
                 List<UserPlanData.RouteData> routeDataList = new ArrayList<>();
-                for (Route route : routeList) {
+                for (PlanRoute planRoute : planRouteList) {
+                    Route route = planRoute.getRoute();
                     UserPlanData.RouteData routeData = new UserPlanData.RouteData();
                     routeData.setRouteId(route.getId());
                     routeData.setDay(route.getDay());
-                    List<Attraction> attractionList = attractionRepository.findAllByRouteId(route.getId());
-                    if (attractionList == null || attractionList.size() == 0) {
+                    List<RouteAttraction> routeAttractionList = routeAttractionRepository.findAllByRouteId(route.getId());
+                    if (routeAttractionList == null || routeAttractionList.size() == 0) {
                         continue;
                     }
                     List<UserPlanData.AttractionData> attractionDataList = new ArrayList<>();
-                    for (Attraction attraction : attractionList) {
+                    for (RouteAttraction routeAttraction : routeAttractionList) {
+                        Attraction attraction = routeAttraction.getAttraction();
                         UserPlanData.AttractionData attractionData = new UserPlanData.AttractionData();
                         attractionData.setAttractionName(attraction.getName());
                         attractionData.setAttactionId(attraction.getId());

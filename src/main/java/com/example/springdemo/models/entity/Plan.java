@@ -14,7 +14,7 @@ public class Plan implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     private String name;
 
@@ -34,6 +34,6 @@ public class Plan implements Serializable {
 
     @Override
     public int hashCode(){
-        return this.id;
+        return (int)this.id;
     }
 }

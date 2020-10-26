@@ -24,6 +24,7 @@ public class RouteAttraction implements Serializable {
     @Column(name = "order_value")
     private int order;
 
+    @PrePersist
     public void prePersiste() {
         if (getId() == null) {
             RouteAttractionId id = new RouteAttractionId();

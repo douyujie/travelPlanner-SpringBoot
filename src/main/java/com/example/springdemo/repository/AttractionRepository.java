@@ -10,9 +10,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AttractionRepository extends JpaRepository<Attraction, Long> {
+public interface AttractionRepository extends JpaRepository<Attraction, Integer> {
     Attraction findByHashcode(String hashCode);
-
-    @Query(name="select h from Attraction a join Route r where r.id = id")
-    List<Attraction> findAllByRouteId(@Param("routeId") long id);
 }

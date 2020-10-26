@@ -16,7 +16,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @NotBlank
     @Size(max=20)
@@ -29,9 +29,6 @@ public class User {
     @NotBlank
     @Size(max=120)
     private String password;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<History> history;
 
     public User(){}
 

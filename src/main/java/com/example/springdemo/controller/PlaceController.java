@@ -21,8 +21,8 @@ public class PlaceController {
     /**
      * Return tourist attractions of the input city
      */
-    @GetMapping ("/attractions")
-    @Cacheable(value="SecondsCache", keyGenerator = "customKeyGenerator")
+    @GetMapping ("/search")
+    //@Cacheable(value="SecondsCache", keyGenerator = "customKeyGenerator")
     public BaseResponse<AttractionsResult> getNearbyPlaces(@RequestParam("city") String city) {
         GoogleMapClient client = new GoogleMapClient();
 
@@ -64,7 +64,7 @@ public class PlaceController {
      * @param id: returned by the google Map API in getNearbyPlaces
      */
     @GetMapping("/detail")
-    @Cacheable(value="place", keyGenerator = "customKeyGenerator")
+    //@Cacheable(value="place", keyGenerator = "customKeyGenerator")
     public BaseResponse<AttractionDetail> getPlaceDetail(@RequestParam("id") String id) {
         GoogleMapClient client = new GoogleMapClient();
         try {

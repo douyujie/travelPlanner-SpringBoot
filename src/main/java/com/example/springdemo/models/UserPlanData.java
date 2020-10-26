@@ -32,7 +32,7 @@ public class UserPlanData {
 
     @lombok.Data
     public static class RouteData {
-        int routeId;
+        long routeId;
         int day;
         private List<AttractionData> attractionDataList;
 
@@ -50,7 +50,7 @@ public class UserPlanData {
     @lombok.Data
     public static class AttractionData {
         private String attractionName;
-        private int attactionId;
+        private long attactionId;
         private Geometry geometry;
         private String type;
         private float rating;

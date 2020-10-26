@@ -13,7 +13,7 @@ public class PlanRoute implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Plan plan;
